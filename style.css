@@ -63,3 +63,18 @@ span::after {
   text-transform: uppercase;
   font-weight: normal;
 }
+@media (max-width: 420px) {
+  .container {
+    width: 300px;
+    height: 155px;
+  }
+  .container .clock span {
+    font-size: 60px;
+    font-weight: bold;
+    position: relative;
+    color: white;
+  }
+  #apm {
+    font-size: 14px;
+  }
+}

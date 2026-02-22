@@ -209,20 +209,18 @@ const backgrounds = {
 let currentBgType = null;
 let lastUpdateDate = "";
 let selectedDistrict = "Dhaka";
+let lastNotifiedEvent = null;
 
 function updateClock() {
     const now = new Date();
     const dateString = now.toDateString();
 
-    // Update Date
     const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     elements.dd.textContent = new Intl.DateTimeFormat('en-US', dateOptions).format(now);
 
-    // Update Timezone
     const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
     elements.timezone.textContent = tz.replace(/_/g, ' ');
 
-    // Update Time
     let hours = now.getHours();
     const period = hours >= 12 ? 'PM' : 'AM';
     hours = hours % 12 || 12;
@@ -234,7 +232,6 @@ function updateClock() {
 
     updateBackground(now.getHours());
 
-    // Update Ramadan times if the day has changed
     if (lastUpdateDate !== dateString) {
         updateRamadanTimes();
         lastUpdateDate = dateString;
@@ -243,12 +240,34 @@ function updateClock() {
     updateCountdown();
 }
 
+function playNotificationSound() {
+    try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const playTone = (freq, startTime, duration) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, startTime);
+            gain.gain.setValueAtTime(0, startTime);
+            gain.gain.linearRampToValueAtTime(0.2, startTime + 0.05);
+            gain.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(startTime);
+            osc.stop(startTime + duration);
+        };
+        playTone(660, audioCtx.currentTime, 0.4);
+        playTone(880, audioCtx.currentTime + 0.2, 0.5);
+    } catch (e) {
+        console.error("Audio failed:", e);
+    }
+}
+
 function updateCountdown() {
     const now = new Date();
     const suhoorOffset = r_adjustments.suhoor_offsets[selectedDistrict];
     const iftarOffset = r_adjustments.iftar_offsets[selectedDistrict];
 
-    // Helper to get Date object from time string and offset
     const getDateObj = (dateStr, timeStr, offset) => {
         const [h, m] = timeStr.split(':').map(Number);
         const d = new Date(dateStr);
@@ -256,7 +275,6 @@ function updateCountdown() {
         return d;
     };
 
-    // Get today's and tomorrow's data
     const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
     const tomorrow = new Date(now);
     tomorrow.setDate(now.getDate() + 1);
@@ -283,13 +301,20 @@ function updateCountdown() {
             label = "Next Suhoor in";
         }
     } else if (tomorrowData) {
-        // Handle case if Ramadan hasn't started today but starts tomorrow
         nextEventTime = getDateObj(tomorrowStr, tomorrowData.suhoor, suhoorOffset);
         label = "First Suhoor in";
     }
 
     if (nextEventTime) {
         const diff = nextEventTime - now;
+
+        // Sound notification on transition
+        const eventId = nextEventTime.getTime();
+        if (lastNotifiedEvent && lastNotifiedEvent !== eventId) {
+            playNotificationSound();
+        }
+        lastNotifiedEvent = eventId;
+
         const h = Math.floor(diff / 3600000);
         const m = Math.floor((diff % 3600000) / 60000);
         const s = Math.floor((diff % 60000) / 1000);
@@ -299,6 +324,7 @@ function updateCountdown() {
         elements.countdownContainer.style.display = 'flex';
     } else {
         elements.countdownContainer.style.display = 'none';
+        lastNotifiedEvent = null;
     }
 }
 

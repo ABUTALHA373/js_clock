@@ -64,12 +64,6 @@ body::before {
   text-align: center;
   max-width: 95%;
   width: 800px;
-  transition: transform 0.3s ease;
-}
-
-.glass-box:hover {
-  transform: translateY(-8px);
-  border-color: rgba(255, 255, 255, 0.4);
 }
 
 .date-display {

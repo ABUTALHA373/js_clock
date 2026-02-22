@@ -9,17 +9,67 @@
 </head>
 
 <body>
-  <div class="container">
-    <p id="dd">day ,date-month-year</p>
-    <div class="clock">
-      <span id="hrs">00</span>
-      <span>:</span>
-      <span id="min">00</span>
-      <span>:</span>
-      <span id="sec">00</span>
-      <span id="apm"> AM</span>
+  <main class="container">
+    <div class="glass-box">
+      <div class="top-controls">
+        <span class="control-label">District:</span>
+        <div class="custom-dropdown" id="custom-district-dropdown">
+          <button class="dropdown-trigger" id="dropdown-trigger">
+            <span id="selected-district-name">Dhaka</span>
+            <svg class="dropdown-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <div class="dropdown-options" id="dropdown-options">
+            <!-- Options populated by JS -->
+          </div>
+        </div>
+      </div>
+
+      <p id="dd" class="date-display">Sunday, 22-02-2026</p>
+
+      <div class="clock">
+        <div class="time-unit">
+          <span id="hrs">00</span>
+          <span class="label">Hours</span>
+        </div>
+        <span class="separator">:</span>
+        <div class="time-unit">
+          <span id="min">00</span>
+          <span class="label">Minutes</span>
+        </div>
+        <span class="separator">:</span>
+        <div class="time-unit">
+          <span id="sec">00</span>
+          <span class="label">Seconds</span>
+        </div>
+        <span id="apm" class="period">AM</span>
+      </div>
+
+      <div id="timezone" class="timezone-display">UTC</div>
+
+      <div class="ramadan-card">
+        <div class="ramadan-info">
+          <span class="ramadan-day" id="ramadan-day-label">Ramadan --</span>
+          <div class="ramadan-times">
+            <div class="r-time-unit">
+              <span class="r-label">Suhoor</span>
+              <span id="suhoor-time" class="r-value">--:--</span>
+            </div>
+            <div class="r-time-unit">
+              <span class="r-label">Iftar</span>
+              <span id="iftar-time" class="r-value">--:--</span>
+            </div>
+          </div>
+          <div id="countdown-container" class="countdown-section">
+            <span id="countdown-label" class="countdown-label">Next Event in</span>
+            <span id="countdown-timer" class="countdown-timer">--:--:--</span>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
+  </main>
 
   <script src="script.js"></script>
 

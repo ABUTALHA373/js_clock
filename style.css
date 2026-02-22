@@ -1,80 +1,371 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap");
+
+:root {
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-blur: 15px;
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --accent-color: #00d2ff;
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "roboto";
-}
-body {
-  height: 100vh;
-  background-color: #333333;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-image: url("https://images.pexels.com/photos/220201/pexels-photo-220201.jpeg");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-}
-.container {
-  padding: 10px;
-  width: 400px;
-  height: 155px;
-  background-color: rgba(0, 0, 0, 0.4);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  backdrop-filter: blur(5px);
-}
-.container {
-  color: #d5d5d5;
-  text-transform: uppercase;
+  font-family: "Outfit", sans-serif;
 }
 
-.container .clock span {
-  font-size: 80px;
-  font-weight: bold;
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #0f172a;
+  background-image: url("https://images.unsplash.com/photo-1534067783496-26e1c42d446a?auto=format&fit=crop&w=1920&q=80");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: background-image 1.2s ease-in-out;
+  overflow: hidden;
   position: relative;
-  color: white;
 }
-span::after {
-  content: " ";
+
+body::before {
+  content: '';
   position: absolute;
-  font-size: 10px;
-  font-weight: normal;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.6) 100%),
+              rgba(15, 23, 42, 0.2);
+  z-index: 0;
+}
+
+/* Glassmorphism Container */
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at center, transparent 0%, rgba(15, 23, 42, 0.4) 100%);
+}
+
+.glass-box {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  padding: 4rem 3rem;
+  border-radius: 2.5rem;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  text-align: center;
+  max-width: 95%;
+  width: 800px;
+  transition: transform 0.3s ease;
+}
+
+.glass-box:hover {
+  transform: translateY(-8px);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.date-display {
+  color: var(--text-secondary);
+  font-size: 1.3rem;
+  font-weight: 400;
+  letter-spacing: 3px;
   text-transform: uppercase;
-  color: #d5d5d5;
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
+  margin-bottom: 2rem;
+  opacity: 0.9;
 }
-#hrs::after {
-  content: "Hours";
+
+.clock {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
 }
-#min::after {
-  content: "Minutes";
+
+.time-unit {
+  display: flex;
+  flex-direction: column;
+  min-width: 140px;
 }
-#sec::after {
-  content: "Seconds";
+
+.time-unit span:first-child {
+  font-size: 8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1;
+  text-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+  font-variant-numeric: tabular-nums;
 }
-#apm {
-  font-size: 16px;
+
+.label {
+  font-size: 0.9rem;
   text-transform: uppercase;
-  font-weight: normal;
+  letter-spacing: 2px;
+  color: var(--text-secondary);
+  margin-top: 0.75rem;
+  font-weight: 600;
 }
-@media (max-width: 420px) {
-  .container {
-    width: 300px;
-    height: 155px;
+
+.separator {
+  font-size: 5rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+  padding-bottom: 2.5rem;
+  animation: pulse 2s infinite;
+  font-variant-numeric: tabular-nums;
+}
+
+.period {
+  font-size: 1.8rem;
+  color: var(--accent-color);
+  font-weight: 700;
+  padding-bottom: 2.5rem;
+  margin-left: 0.8rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.top-controls {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.control-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.custom-dropdown {
+  position: relative;
+  min-width: 140px;
+}
+
+.dropdown-trigger {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  border: 1px solid var(--glass-border);
+  padding: 0.6rem 1rem;
+  border-radius: 0.8rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  backdrop-filter: blur(var(--glass-blur));
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-trigger:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.dropdown-icon {
+  width: 1rem;
+  height: 1rem;
+  color: var(--text-secondary);
+  transition: transform 0.3s ease;
+}
+
+.custom-dropdown.active .dropdown-icon {
+  transform: rotate(180deg);
+}
+
+.dropdown-options {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  width: 200px;
+  max-height: 300px;
+  background: rgba(30, 41, 59, 0.8);
+  backdrop-filter: blur(25px);
+  border: 1px solid var(--glass-border);
+  border-radius: 1rem;
+  overflow-y: auto;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 100;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.custom-dropdown.active .dropdown-options {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdown-option {
+  padding: 0.8rem 1.2rem;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.dropdown-option:last-child {
+  border-bottom: none;
+}
+
+.dropdown-option:hover {
+  background: rgba(255, 255, 255, 0.1);
+  padding-left: 1.5rem;
+  color: var(--accent-color);
+}
+
+.dropdown-option.selected {
+  background: rgba(0, 210, 255, 0.15);
+  color: var(--accent-color);
+  font-weight: 700;
+}
+
+/* Custom Scrollbar for Dropdown List */
+.dropdown-options::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dropdown-options::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.dropdown-options::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.dropdown-options::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.countdown-section {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.countdown-label {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+}
+
+.countdown-timer {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #fbbf24;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 15px rgba(251, 191, 36, 0.3);
+}
+
+.ramadan-card {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: rgba(0, 210, 255, 0.05);
+  border-radius: 1.5rem;
+  border: 1px solid rgba(0, 210, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.ramadan-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ramadan-day {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--accent-color);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.ramadan-times {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+}
+
+.r-time-unit {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.r-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.r-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* Responsive adjustments for Ramadan elements */
+@media (max-width: 640px) {
+  .top-controls {
+    position: static;
+    margin-bottom: 1.5rem;
   }
-  .container .clock span {
-    font-size: 60px;
-    font-weight: bold;
-    position: relative;
-    color: white;
+  
+  .ramadan-times {
+    gap: 1.5rem;
   }
-  #apm {
-    font-size: 14px;
+  
+  .r-value {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .clock {
+    gap: 0.5rem;
+  }
+  
+  .time-unit span:first-child {
+    font-size: 2.5rem;
+  }
+  
+  .time-unit {
+    min-width: 50px;
+  }
+  
+  .period {
+    font-size: 1rem;
+  }
+
+  .timezone-display {
+    font-size: 0.8rem;
+    min-width: 150px;
   }
 }
